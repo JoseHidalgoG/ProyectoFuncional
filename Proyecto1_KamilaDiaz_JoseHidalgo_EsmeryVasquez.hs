@@ -1,17 +1,17 @@
-{- Proyecto 1 Programación Funcional: Evaluador de Operaciones -}
+{- Proyecto 1 Programacion Funcional: Evaluador de Operaciones -}
 
 {- ============TIPOS ALGEBRAICOS============ -}
--- tipo 'Operador', para separar la estructura de operación
-data Operador = Suma | Resta | Mult | Division 
+-- tipo 'Operador', para separar la estructura de operacion
+data Operador = Suma | Resta | Mult | Division deriving Read
 
--- tipo 'Expresion' que representa el árbol de una expresión aritmética, tipo recursivo
-data Expresion = Numero Int | Aplicar Operador Expresion Expresion 
+-- tipo 'Expresion' que representa el arbol de una expresion aritmética, tipo recursivo
+data Expresion = Numero Int | Aplicar Operador Expresion Expresion deriving Read
 
 {- ================FUNCIONES================ -}
 {-
-Aplicar la operación
+Aplicar la operacion
 Aplica un operador a dos enteros
-Devuelve Maybe para manejar errores, Just resultado si la operación es válida y Nothing si ocurre un error
+Devuelve Maybe para manejar errores, Just resultado si la operacion es valida y Nothing si ocurre un error
 -}
 aplicarOperacion :: Operador -> Int -> Int -> Maybe Int
 aplicarOperacion Suma x y = Just (x + y)
@@ -22,8 +22,8 @@ aplicarOperacion Division x y = Just (x `div` y)
 
 {-
 Combina dos valores de tipo Maybe Int
-Si alguno de los argumentos es Nothing, devuelve Nothing. Si ambos son Just aplica la función que recibe
-Si hay error en alguna subexpresión, el error se propaga de manera automática.
+Si alguno de los argumentos es Nothing, devuelve Nothing. Si ambos son Just aplica la funcion que recibe
+Si hay error en alguna subexpresion, el error se propaga de manera automatica.
 -}
 combinar :: Maybe Int -> Maybe Int -> (Int -> Int -> Maybe Int) -> Maybe Int
 combinar Nothing _ _ = Nothing
@@ -31,7 +31,7 @@ combinar _ Nothing _ = Nothing
 combinar (Just x) (Just y) f = f x y
 
 {-
-Función 'evaluar' recursiva que procesa una expresion representada como un arbol.
+Funcion 'evaluar' recursiva que procesa una expresion representada como un arbol.
 Si es un Numero, devuelve Just n.
 Si es una Aplicacion de operador, evalua ambas subexpresiones y aplica el operador si ambas son validas.
 Si ocurre un error (por ejemplo division por cero),devuelve Nothing.
@@ -57,4 +57,6 @@ main = do
     print(evaluar expresion)
     putStrLn "Expresion invalida '5/0': "
     print(evaluar expresionError)
-    
+    putStrLn "Introduzca una expresion: "
+    exp1 <- readLn :: IO Expresion
+    print(evaluar exp1)
