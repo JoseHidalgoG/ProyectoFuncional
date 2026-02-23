@@ -43,20 +43,23 @@ evaluar (Aplicar op e1 e2) =
             (evaluar e2)
             (aplicarOperacion op)
 
+--funcion para tomar expresiones y llevarlas a tipo IO para ser mostrada como salida
+maybeToIO :: a -> IO a
+maybeToIO = return
+
 {- ====================MAIN==================== -}
 -- Main con ejemplo de expresion valida e invalida
 main :: IO ()
 main = do
-    let expresion = 
-            Aplicar Mult 
+    let expresion =
+            Aplicar Mult
                 (Aplicar Suma (Numero 8) (Numero 4))
                 (Aplicar Resta (Numero 3) (Numero 1))
         expresionError = Aplicar Division (Numero 5) (Numero 0)
-
-    putStrLn "Expresion valida '(8 + 4) * (3 - 1)': "
-    print(evaluar expresion)
-    putStrLn "Expresion invalida '5/0': "
-    print(evaluar expresionError)
+    putStrLn "=== Evaluador de operaciones aritmeticas ==="
+    putStrLn "Expresion valida: Aplicar Mult (Aplicar Suma (Numero 8) (Numero 4)) (Aplicar Resta (Numero 3) (Numero 1)) = (8 + 4) * (3 - 1) = 24"
+    putStrLn "Expresiones invalidas '5/0', '3 - 1', 'Suma Aplicar Numero 1': "
     putStrLn "Introduzca una expresion: "
-    exp1 <- readLn :: IO Expresion
-    print(evaluar exp1)
+    exp <- readLn :: IO Expresion
+    result <- maybeToIO $ evaluar exp
+    print result
